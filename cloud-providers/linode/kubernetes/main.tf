@@ -13,12 +13,12 @@ provider "linode" {
 }
 
 resource "linode_lke_cluster" "awesomesre_cluster" {
-  label = "awesomesre"
+  label = "lke_cluster"
   k8s_version = "1.27"
   region = "eu-west"
 
   pool {
-    type = "g6-standard-2"
+    type = "g6-standard-4"
     count = 2
   }
 }

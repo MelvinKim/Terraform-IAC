@@ -20,3 +20,9 @@ ingress-tls.yaml
 1-ingress-loadblancer.sh
 1-ingress-nodeport.sh
 ingress-nginx-controller-setup
+baremetal
+cloud
+
+variables.tf
+manifests
+*.yaml
