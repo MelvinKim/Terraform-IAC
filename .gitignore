@@ -26,3 +26,6 @@ cloud
 variables.tf
 manifests
 *.yaml
+
+# generated resources
+*generated*
