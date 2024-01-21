@@ -1,39 +1,32 @@
-resource "aws_security_group_rule" "allow-egress" {
-  count = length(var.sg_egress_rules)
+module "ingress_security_group_rules" {
+  source = "../../../modules/security-group-rule"
 
-  type = "egress"
-  from_port = var.sg_egress_rules[count.index].from_port
-  to_port = var.sg_egress_rules[count.index].to_port
-  protocol = var.sg_egress_rules[count.index].protocol
-  description = var.sg_egress_rules[count.index].description
-  cidr_blocks = var.sg_egress_rules[count.index].cidr_block
-  security_group_id = aws_security_group.prod-prometheus.id
+  sg_rules = local.ingress_security_group_rules
+  security_group_id = module.security_group.security_group_id
+  security_group_rules_type = var.ingress_security_group_rules_type
 }
 
-resource "aws_security_group_rule" "allow-ingress" {
-  count = length(var.sg_ingress_rules)
-  
-  type = "ingress"
-  from_port = var.sg_ingress_rules[count.index].from_port
-  to_port = var.sg_ingress_rules[count.index].to_port
-  protocol = var.sg_ingress_rules[count.index].protocol
-  description = var.sg_ingress_rules[count.index].description
-  cidr_blocks = var.sg_ingress_rules[count.index].cidr_block
-  security_group_id = aws_security_group.prod-prometheus.id
+module "egress_security_group_rules" {
+  source = "../../../modules/security-group-rule"
+
+  sg_rules = local.egress_security_group_rules
+  security_group_id = module.security_group.security_group_id
+  security_group_rules_type = var.egress_security_group_rules_type
 }
 
-resource "aws_security_group" "prod-prometheus" {
-  name = var.security_group_name
+module "security_group" {
+  source = "../../../modules/security-group"
+
+  security_group_name = var.security_group_name
 }
 
-resource "aws_instance" "prod-prometheus" {
+module "ec2_instance" {
+  source = "../../../modules/ec2"
+
   ami = var.ami_id
   instance_type = var.instance_type
   subnet_id = var.subnet_id
-  vpc_security_group_ids = [aws_security_group.prod-prometheus.id]
-  key_name = "prod-prometheus"
-
-  tags = {
-    Name = var.instance_name_tag # Assign a name to the EC2 instance
-  }
+  vpc_security_group_ids = [module.security_group.security_group_id]
+  key_pair_name = var.key_pair_name
+  tags = local.tags
 }

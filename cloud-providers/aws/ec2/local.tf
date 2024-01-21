@@ -1,37 +1,16 @@
-variable "ami_id" {
-  type = string
-}
-
-variable "instance_type" {
-  type = string
-  default = "t2.micro"
-}
-
-variable "subnet_id" {
-  type =string
-  description = "subnet id"
-}
-
-variable "instance_name_tag" {
-  type = string
-  description = "Instance name"
-}
-
-variable "aws_region" {
-  type = string
-  description = "AWS region"
-}
-
-variable "sg_ingress_rules" {
-  type = list(object({
-    from_port = number
-    to_port = number
-    protocol = string
-    cidr_block = list(string)
-    ipv6_cidr_blocks = string
-    description = string
-  }))
-  default = [
+locals {
+  egress_security_group_rules = [
+    {
+      from_port = 0
+      to_port = 0
+      protocol = "-1"
+      cidr_block = ["0.0.0.0/0"]
+      description = "egress ingress rule"
+      ipv6_cidr_blocks = "::/0"
+    },
+  ]
+  
+  ingress_security_group_rules = [
     {
       from_port = 22
       to_port = 22
@@ -89,43 +68,7 @@ variable "sg_ingress_rules" {
       description = "Nginx"
     },
    ]
-}
-
-variable "sg_egress_rules" {
-  type = list(object({
-    from_port = number
-    to_port = number
-    protocol = string
-    cidr_block = list(string)
-    ipv6_cidr_blocks = string
-    description = string
-  }))
-  default = [
-    {
-      from_port = 0
-      to_port = 0
-      protocol = "-1"
-      cidr_block = ["0.0.0.0/0"]
-      description = "egress ingress rule"
-      ipv6_cidr_blocks = "::/0"
-    },
-  ]
-}
-
-variable "security_group_name" {
-  type = string
-}
-
-variable "key_pair_name" {
-  type = string
-}
-
-variable "egress_security_group_rules_type" {
-  type = string
-  default = "egress"
-}
-
-variable "ingress_security_group_rules_type" {
-  type = string
-  default = "ingress"
+  tags = {
+    Name = "ke-prod-elk-stack"
+  }
 }
