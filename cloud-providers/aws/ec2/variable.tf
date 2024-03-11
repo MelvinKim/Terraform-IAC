@@ -88,6 +88,14 @@ variable "sg_ingress_rules" {
       ipv6_cidr_blocks = "::/0"
       description = "Nginx"
     },
+    {
+      from_port = 5432
+      to_port = 5432
+      protocol = "tcp"
+      cidr_block = ["0.0.0.0/0"]
+      ipv6_cidr_blocks = "::/0"
+      description = "PostgreSQL"
+    },
    ]
 }
 
