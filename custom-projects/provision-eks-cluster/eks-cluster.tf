@@ -17,8 +17,8 @@ module "eks" {
       name = var.node_group_1_name
       instance_types = var.worker_nodes_instance_types
       min_size     = 1
-      max_size     = 3
-      desired_size = 2
+      max_size     = 2
+      desired_size = 1
     }
     # two = {
     #   name = "node-group-2"

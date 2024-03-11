@@ -24,8 +24,7 @@ baremetal
 cloud
 
 variables.tf
-manifests
-*.yaml
+cloud-providers/linode/kubernetes/*
 
 # generated resources
 *generated*
