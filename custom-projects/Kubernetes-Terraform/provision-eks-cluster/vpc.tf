@@ -15,4 +15,6 @@ module "vpc" {
 
   public_subnet_tags = local.public_subnet_tags
   private_subnet_tags = local.private_subnet_tags
+
+  default_security_group_tags = local.default_security_group_tags
 }
